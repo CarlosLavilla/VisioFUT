@@ -208,3 +208,7 @@ __marimo__/
 
 # Data files
 *.mp4
+
+# VS Code files
+
+.vscode/
