@@ -208,7 +208,14 @@ __marimo__/
 
 # Data files
 *.mp4
+**/images/**
+**/labels/**
+**/train/**
+**/train.txt
+
+# YOLO generated content
+**/runs/**
+**.pt
 
 # VS Code files
-
 .vscode/
