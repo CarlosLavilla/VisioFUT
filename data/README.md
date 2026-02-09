@@ -24,7 +24,8 @@ Each video was labeled using **Computer Vision Annotation Tool** (CVAT). The pro
 Datasets will be placed in subfolders of `data`. The naming is to be `football_detection_cvat_v<n>`.
 
 Before a training iteration, inside the folder the following contents must be present:
-```
+
+```txt
 football_detection_cvat_v<n>/
 ├── images/
 │   ├── train/
@@ -37,7 +38,7 @@ football_detection_cvat_v<n>/
 
 ## Training
 
-The model to use at the early stages of the project is `yolov8n.pt`. This will help fast iteration and will be enough for the small set of data available at the beggining of the project.
+The model to use at the early stages of the project is `yolov8n.pt`. This will help fast iteration and will be enough for the small set of data available at the beginning of the project.
 
 The training command to be used is:
 
