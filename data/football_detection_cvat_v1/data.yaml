@@ -1,0 +1,9 @@
+path: data/football_detection_cvat_v1
+
+train: images/train
+val: images/train # For first version, no validation
+
+names:
+  0: player
+  1: ball
+  2: referee
