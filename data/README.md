@@ -19,6 +19,12 @@ For the first iteration of the model I labeled a small dataset myself. The first
 
 Each video was labeled using **Computer Vision Annotation Tool** (CVAT). The procedure followed was to label the clips each 10 frames. Then I exported the datasets obtained from them using the **Ultralytics YOLO Detection 1.0** export format and saving the images.
 
+Initially one 10 seconds clip was manually annotated. Then, the successive models obtained from training were used as the base annotation source, correcting the annotations each 10 frames. The command used for using the model for annotation is:
+
+```cmd
+yolo detect predict model=runs/detect/train<x>/weights/best.pt source=<path_to_video> save_txt=True save_conf=True project=predictions name=video_prediction
+```
+
 ## Naming convention for datasets
 
 Datasets will be placed in subfolders of `data`. The naming is to be `football_detection_cvat_v<n>`.
