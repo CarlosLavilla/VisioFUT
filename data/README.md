@@ -59,5 +59,5 @@ The initial idea is to upscale to the **small** version and then to the **medium
 For each iteration the previous model is used for pre-annotation. This way I only need to correct what the model predicts and the workload decreases drastically. For detection the following command can be used (once a first model is present):
 
 ```cmd
-detect predict model=runs/detect/train<x>/weights/best.pt source=path_to_clip.mp4 save_txt=True save_conf=True project=predictions name=destination_folder_name
+yolo track model=runs/detect/train<x>/weights/best.pt source=path_to_clip.mp4 save_txt=True save_conf=True project=predictions name=destination_folder_name
 ```
