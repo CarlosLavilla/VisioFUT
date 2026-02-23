@@ -102,6 +102,9 @@ class VisioFUTService:
                 # Fallback for indeterminate progress
                 yield processed_frames
 
+        # Post process the obtained tracks
+        self._post_process_tracks(tracks, total_frames)
+
         xml_file: ET.ElementTree = self._generate_xml(tracks)
 
         xml_file.write("annotations.xml", encoding="utf-8", xml_declaration=True)
@@ -152,6 +155,53 @@ class VisioFUTService:
                     key,
                     CVATTrack(track_id, str(class_id), []),
                 ).tracked_boxes.append(cvat_box)
+
+    def _post_process_tracks(
+        self, tracks: dict[str, CVATTrack], total_frames: int
+    ) -> None:
+        """Post processes the obtained results from the model.
+
+        Args:
+            tracks (dict[str, CVATTrack]): results obtained by the prediction model.
+            total_frames (int): total frames of the video.
+        """
+        for track_id in tracks:
+            track = tracks[track_id]
+            last_keyframe = None
+
+            # Ensure the boxes are sorted by frame
+            track.tracked_boxes.sort(key=lambda b: b.frame)
+
+            for i in range(len(track.tracked_boxes)):
+                frame = track.tracked_boxes[i].frame
+                if last_keyframe is None or frame - last_keyframe >= 10:
+                    # Set a step keyframe for avoiding fragmentation of tracks due to interpolation
+                    track.tracked_boxes[i].keyframe = 1
+
+                if track.tracked_boxes[i].keyframe == 1:
+                    last_keyframe = frame
+
+            # First appearance of the track must be always marked as a keyframe
+            track.tracked_boxes[0].keyframe = 1
+
+            last_track_box = track.tracked_boxes[-1]
+            # Last appearance of the track must be always marked as a keyframe
+            last_track_box.keyframe = 1
+            # Assess the outside property for the last frame of the track
+            if last_track_box.frame < total_frames - 1:
+                tracks[track_id].tracked_boxes.append(
+                    CVATTrackedBox(
+                        last_track_box.frame + 1,
+                        last_track_box.xtl,
+                        last_track_box.ytl,
+                        last_track_box.xbr,
+                        last_track_box.ybr,
+                        outside=1,
+                        keyframe=1,
+                    )
+                )
+            else:
+                last_track_box.outside = 0
 
     def _generate_xml(self, tracks: dict[str, CVATTrack]) -> ET.ElementTree:
         """Generates the CVAT 1.1 XML representation of the results obtained by the model.
