@@ -20,6 +20,12 @@ CONFIDENCE_THRESHOLD: dict[MyYoloLabel, float] = {
     MyYoloLabel.BALL: 0.3,
 }
 
+KEYFRAME_CONFIDENCE_THRESHOLD: dict[MyYoloLabel, float] = {
+    MyYoloLabel.PLAYER: 0.95,
+    MyYoloLabel.REFEREE: 0.85,
+    MyYoloLabel.BALL: 0.75,
+}
+
 
 class VisioFUTService:
 
@@ -126,7 +132,19 @@ class VisioFUTService:
                 xyxy = boxes.xyxy[box_index].tolist()
                 x1, y1, x2, y2 = xyxy
 
-                cvat_box: CVATTrackedBox = CVATTrackedBox(frame_id, x1, y1, x2, y2)
+                cvat_box: CVATTrackedBox = CVATTrackedBox(
+                    frame_id,
+                    x1,
+                    y1,
+                    x2,
+                    y2,
+                    keyframe=(
+                        1
+                        if confidence
+                        >= KEYFRAME_CONFIDENCE_THRESHOLD[MyYoloLabel(class_id)]
+                        else 0
+                    ),
+                )
 
                 key: str = f"{class_id}-{track_id}"
 
