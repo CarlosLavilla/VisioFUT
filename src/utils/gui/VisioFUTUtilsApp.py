@@ -4,8 +4,8 @@ from tkinter import filedialog, messagebox, ttk
 from pathlib import Path
 from typing import Optional
 
-from utils.service.VisioFUTService import VisioFUTService
-from utils.service.VisioFUTWorker import VisioFUTWorker
+from ..service.VisioFUTService import VisioFUTService
+from ..service.VisioFUTWorker import VisioFUTWorker
 
 ALLOWED_EXTENSIONS: set[str] = {".mp4"}
 
@@ -97,6 +97,7 @@ class VisioFUTUtilsApp:
             self._root.after(
                 0, lambda: messagebox.showinfo("Done", "Video processing complete!")
             )
+            self._root.after(500, lambda: self._progress.configure(value=0))
 
         def on_exception(exc: Exception):
             self._root.after(0, lambda: messagebox.showerror("Error", str(exc)))

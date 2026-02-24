@@ -3,7 +3,7 @@ import threading
 from pathlib import Path
 from typing import Callable
 
-from utils.service.VisioFUTService import VisioFUTService
+from ..service.VisioFUTService import VisioFUTService
 
 
 class VisioFUTWorker:
@@ -23,6 +23,10 @@ class VisioFUTWorker:
         self._on_error = on_error
 
     def start(self) -> None:
+        thread = threading.Thread(target=self._run, daemon=True)
+        thread.start()
+
+    def _run(self) -> None:
         try:
             for progress in self._service.track_video(self._video_path):
                 self._on_progress(progress)

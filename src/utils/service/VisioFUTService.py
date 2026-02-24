@@ -6,12 +6,21 @@ from ultralytics import YOLO
 from ultralytics.engine.results import Results, Boxes
 
 import cv2
+import logging
+import sys
 
-from utils.model.CVATElement import CVATTrack, CVATTrackedBox
-from utils.model.enum import MyYoloLabel
+from ..model.CVATElement import CVATTrack, CVATTrackedBox
+from ..model.Enum import MyYoloLabel
 
 IMG_WIDTH = 1920
 IMG_HEIGHT = 1080
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    handlers=[logging.StreamHandler(sys.stdout)],  # This ensures it goes to the console
+)
+logger = logging.getLogger(__name__)
 
 # Different thresholds for each category due to different difficulties on detection
 CONFIDENCE_THRESHOLD: dict[MyYoloLabel, float] = {
@@ -41,8 +50,15 @@ class VisioFUTService:
         Yields:
             Iterator[int]: progress made
         """
+        logger.info("Starting video tracking...")
+
         results: Iterable[Results] = self._model.track(
-            source=video_path, persist=True, stream=True, device=0, conf=0.25
+            source=video_path,
+            persist=True,
+            stream=True,
+            device=0,
+            conf=0.25,
+            tracker="bytetrack.yaml",
         )
 
         total_frames = self._get_total_frames(video_path)
@@ -82,6 +98,8 @@ class VisioFUTService:
         # Progress tracking by frames
         processed_frames: int = 0
 
+        logger.info("Processing results...")
+
         for frame_id, result in enumerate(results):
 
             boxes = result.boxes
@@ -102,10 +120,14 @@ class VisioFUTService:
                 # Fallback for indeterminate progress
                 yield processed_frames
 
+        logger.info("Starting post-processing...")
+
         # Post process the obtained tracks
         self._post_process_tracks(tracks, total_frames)
 
         xml_file: ET.ElementTree = self._generate_xml(tracks)
+
+        logger.info("Writing XML to file...")
 
         xml_file.write("annotations.xml", encoding="utf-8", xml_declaration=True)
 
@@ -150,10 +172,11 @@ class VisioFUTService:
                 )
 
                 key: str = f"{class_id}-{track_id}"
+                label_name: str = MyYoloLabel(class_id).name.lower()
 
                 tracks.setdefault(
                     key,
-                    CVATTrack(track_id, str(class_id), []),
+                    CVATTrack(track_id, label_name, []),
                 ).tracked_boxes.append(cvat_box)
 
     def _post_process_tracks(

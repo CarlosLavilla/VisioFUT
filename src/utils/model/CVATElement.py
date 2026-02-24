@@ -19,7 +19,7 @@ class CVATTrackedBox(CVATElement):
     ybr: float
     outside: int = 0
     occluded: int = 0
-    keyframe: int = 1
+    keyframe: int = 0
     z_order: int = 0
 
     def to_xml(self, parent: ET.Element):
