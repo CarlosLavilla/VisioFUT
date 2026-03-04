@@ -4,14 +4,25 @@ import xml.etree.ElementTree as ET
 
 
 class CVATElement(ABC):
+    """Interface that provides a common contract for representation of CVAT elements."""
 
     @abstractmethod
     def to_xml(self, parent: ET.Element) -> ET.Element:
+        """Generates the XML representation of the CVAT element.
+
+        Args:
+            parent (ET.Element): XML parent of the element to be generated.
+
+        Returns:
+            ET.Element: XML representation of the CVAT element attached to the provided parent.
+        """
         pass
 
 
 @dataclass
 class CVATTrackedBox(CVATElement):
+    """Representation of a CVAT Tracked Box."""
+
     frame: int
     xtl: float
     ytl: float
@@ -42,6 +53,8 @@ class CVATTrackedBox(CVATElement):
 
 @dataclass
 class CVATTrack(CVATElement):
+    """Representation of a CVAT Track."""
+
     track_id: int
     label: str
     tracked_boxes: list[CVATTrackedBox]
