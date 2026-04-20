@@ -52,7 +52,7 @@ yolo detect train model=yolov8n.pt data=data/football_detection_cvat_v<n>/data.y
 
 However, the model will be upscaled when the data available is big enough and the nano model is fairly accurate.
 
-The initial idea is to upscale to the **small** version and then to the **medium**. But this will be decided on the go. What is not to be decided is whether there will be an upscaling, because the nano model will start to be not enough when the dataset grows.
+The initial idea is to upscale from the **nano** version to the **medium**. But this will be decided on the go. There is no guarantee that there will be an upscaling.
 
 ### Iterations
 
