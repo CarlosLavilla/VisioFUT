@@ -208,7 +208,7 @@ __marimo__/
 
 # Data files
 *.mp4
-**/images/**
+**/data/images/**
 **/labels/**
 **/train/**
 **/train.txt
