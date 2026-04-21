@@ -1,0 +1,61 @@
+{
+    "experiment": {
+        "id": "exp_XXX",
+        "name": "name",
+        "date": "YYYY-MM-DD"
+    },
+    "dataset": {
+        "description": "Description",
+        "num_images": null,
+        "duration_seconds": null,
+        "train_val_split": {
+            "train_ratio": null,
+            "val_ratio": null
+        }
+    },
+    "training": {
+        "model": "Model used",
+        "pretrained": null,
+        "data_config": "Directory of data.yaml",
+        "epochs": null,
+        "image_size": null,
+        "batch_size": null,
+        "optimizer": null,
+        "device": null,
+        "training_time_seconds": null
+    },
+    "final_metrics": {
+        "mAP50": null,
+        "mAP50_95": null,
+        "precision": null,
+        "recall": null
+    },
+    "best_metrics": {
+        "mAP50": {
+            "value": null,
+            "epoch": null
+        },
+        "mAP50_95": {
+            "value": null,
+            "epoch": null
+        }
+    },
+    "losses": {
+        "train": {
+            "box": null,
+            "cls": null,
+            "dfl": null
+        },
+        "val": {
+            "box": null,
+            "cls": null,
+            "dfl": null
+        }
+    },
+    "training_behavior": {
+        "converged": null,
+        "stable_training": null,
+        "overfitting_observed": null
+    },
+    "flags": []
+}

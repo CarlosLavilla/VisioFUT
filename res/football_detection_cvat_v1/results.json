@@ -1,0 +1,64 @@
+{
+    "experiment": {
+        "id": "exp_001",
+        "name": "single_clip",
+        "date": "2026-02-09"
+    },
+    "dataset": {
+        "description": "Training over single 10-second football clip",
+        "num_images": 250,
+        "duration_seconds": 10,
+        "train_val_split": {
+            "train_ratio": 1.0,
+            "val_ratio": 0.0
+        }
+    },
+    "training": {
+        "model": "yolov8n",
+        "pretrained": true,
+        "data_config": "data/football_detection_cvat_v1/data.yaml",
+        "epochs": 50,
+        "image_size": 1280,
+        "batch_size": 8,
+        "optimizer": "auto",
+        "device": "0",
+        "training_time_seconds": 287.21
+    },
+    "final_metrics": {
+        "mAP50": 0.86993,
+        "mAP50_95": 0.64586,
+        "precision": 0.94554,
+        "recall": 0.81792
+    },
+    "best_metrics": {
+        "mAP50": {
+            "value": 0.86993,
+            "epoch": 50
+        },
+        "mAP50_95": {
+            "value": 0.64586,
+            "epoch": 50
+        }
+    },
+    "losses": {
+        "train": {
+            "box": 0.84214,
+            "cls": 0.61933,
+            "dfl": 0.8598
+        },
+        "val": {
+            "box": 0.78864,
+            "cls": 0.53699,
+            "dfl": 0.85008
+        }
+    },
+    "training_behavior": {
+        "converged": true,
+        "stable_training": true,
+        "overfitting_observed": "not_evaluable"
+    },
+    "flags": [
+        "non_representative_data",
+        "no_validation_split"
+    ]
+}
