@@ -3,14 +3,14 @@ import threading
 from pathlib import Path
 from typing import Callable
 
-from ..service.VisioFUTService import VisioFUTService
+from .tracker_service import VisioFUTTracker
 
 
-class VisioFUTWorker:
+class VisioFUTTrackerWorker:
 
     def __init__(
         self,
-        service: VisioFUTService,
+        service: VisioFUTTracker,
         video_path: Path,
         on_progress: Callable[[int], None],
         on_done: Callable[[], None],

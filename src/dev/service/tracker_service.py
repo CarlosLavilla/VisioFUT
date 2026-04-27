@@ -9,8 +9,8 @@ import cv2
 import logging
 import sys
 
-from ..model.CVATElement import CVATTrack, CVATTrackedBox
-from ..model.Enum import MyYoloLabel
+from ..model.cvat_element import CVATTrack, CVATTrackedBox
+from ..model.dev_enum import MyYoloLabel
 
 IMG_WIDTH = 1920
 IMG_HEIGHT = 1080
@@ -36,7 +36,7 @@ KEYFRAME_CONFIDENCE_THRESHOLD: dict[MyYoloLabel, float] = {
 }
 
 
-class VisioFUTService:
+class VisioFUTTracker:
 
     def __init__(self, model_path: Path) -> None:
         self._model = YOLO(str(model_path))

@@ -4,17 +4,17 @@ from tkinter import filedialog, messagebox, ttk
 from pathlib import Path
 from typing import Optional
 
-from ..service.VisioFUTService import VisioFUTService
-from ..service.VisioFUTWorker import VisioFUTWorker
+from ..service.tracker_service import VisioFUTTracker
+from ..service.tracker_worker import VisioFUTTrackerWorker
 
 ALLOWED_EXTENSIONS: set[str] = {".mp4"}
 
 
-class VisioFUTUtilsApp:
+class VisioFUTDevApp:
 
     def __init__(self, root: tk.Tk) -> None:
 
-        self._annotation_service = VisioFUTService(Path("models\\best.pt"))
+        self._annotation_service = VisioFUTTracker(Path("models\\best.pt"))
 
         self._root: tk.Tk = root
         self._root.title("VisioFUT Utils App")
@@ -102,7 +102,7 @@ class VisioFUTUtilsApp:
         def on_exception(exc: Exception):
             self._root.after(0, lambda: messagebox.showerror("Error", str(exc)))
 
-        worker = VisioFUTWorker(
+        worker = VisioFUTTrackerWorker(
             service=self._annotation_service,
             video_path=video_path,
             on_progress=on_progress,
@@ -128,13 +128,3 @@ class VisioFUTUtilsApp:
             return None
 
         return path
-
-
-def main() -> None:
-    root: tk.Tk = tk.Tk()
-    _ = VisioFUTUtilsApp(root)
-    root.mainloop()
-
-
-if __name__ == "__main__":
-    main()
