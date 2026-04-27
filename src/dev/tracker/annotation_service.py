@@ -36,12 +36,12 @@ KEYFRAME_CONFIDENCE_THRESHOLD: dict[MyYoloLabel, float] = {
 }
 
 
-class VisioFUTTracker:
+class VisioFUTAnnotationService:
 
     def __init__(self, model_path: Path) -> None:
         self._model = YOLO(str(model_path))
 
-    def track_video(self, video_path: Path) -> Iterator[int]:
+    def track_video(self, video_path: Path, save_video: bool = False) -> Iterator[int]:
         """Makes the YOLO model predict (with tracking) in the provided video.
 
         Args:
@@ -51,6 +51,8 @@ class VisioFUTTracker:
             Iterator[int]: progress made
         """
         logger.info("Starting video tracking...")
+        if save_video:
+            logger.info("The annotated video will be stored")
 
         results: Iterable[Results] = self._model.track(
             source=video_path,
@@ -59,6 +61,8 @@ class VisioFUTTracker:
             device=0,
             conf=0.25,
             tracker="bytetrack.yaml",
+            save=save_video,
+            name=video_path.stem if save_video else None,
         )
 
         total_frames = self._get_total_frames(video_path)
