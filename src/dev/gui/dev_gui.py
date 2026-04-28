@@ -15,7 +15,7 @@ class VisioFUTDevApp:
         self._root.geometry("600x300")
         self._root.resizable(False, False)
 
-        # Shared Services
+        # Features Services
         self._tracker_service = VisioFUTAnnotationService(Path("models/best.pt"))
 
         # Setup Tabs

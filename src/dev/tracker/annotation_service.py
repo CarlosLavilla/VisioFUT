@@ -9,8 +9,7 @@ import cv2
 import logging
 import sys
 
-from ..model.cvat_element import CVATTrack, CVATTrackedBox
-from ..model.dev_enum import MyYoloLabel
+from .annotation_models import CVATTrack, CVATTrackedBox, MyYoloLabel
 
 IMG_WIDTH = 1920
 IMG_HEIGHT = 1080
@@ -68,7 +67,7 @@ class VisioFUTAnnotationService:
         total_frames = self._get_total_frames(video_path)
 
         yield from self._create_xml_predictions(
-            results=results, total_frames=total_frames
+            video_path=video_path, results=results, total_frames=total_frames
         )
 
     def _get_total_frames(self, video_path: Path) -> int:
@@ -86,11 +85,12 @@ class VisioFUTAnnotationService:
         return total
 
     def _create_xml_predictions(
-        self, results: Iterable[Results], total_frames: int
+        self, video_path: Path, results: Iterable[Results], total_frames: int
     ) -> Iterator[int]:
         """Processes the predictions made by the model and saves an xml file with the results in CVAT's format.
 
         Args:
+            video_path (Path): path to the video file
             results (Iterable[Results]): results that the model has obtained.
             total_frames (int): total frames in the video (for progress tracking).
 
@@ -133,7 +133,14 @@ class VisioFUTAnnotationService:
 
         logger.info("Writing XML to file...")
 
-        xml_file.write("annotations.xml", encoding="utf-8", xml_declaration=True)
+        output_dir = Path("output")
+        output_dir.mkdir(exist_ok=True)
+
+        file_name = f"{video_path.stem}_annotations.xml"
+        final_path = output_dir / file_name
+
+        xml_file.write(str(final_path), encoding="utf-8", xml_declaration=True)
+        logger.info(f"XML saved to {final_path}")
 
         # Complete progress
         yield 100

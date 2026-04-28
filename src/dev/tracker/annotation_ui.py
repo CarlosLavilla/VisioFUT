@@ -105,7 +105,8 @@ class VisioFUTAnnotationUI(BaseFeatureUI):
 
         def on_exception(exc: Exception):
             self.after(0, lambda: messagebox.showerror("Error", str(exc)))
-            self._submit_button.config(state=tk.NORMAL)
+            self.after(500, lambda: self._progress.configure(value=0))
+            self.after(500, lambda: self._submit_button.config(state=tk.NORMAL))
 
         worker = VisioFUTAnnotationWorker(
             service=self._service,

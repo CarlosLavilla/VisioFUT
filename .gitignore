@@ -220,5 +220,6 @@ __marimo__/
 # VS Code files
 .vscode/
 
-# Annotation XML
+# Annotation XML and output folder
+output/
 **.xml

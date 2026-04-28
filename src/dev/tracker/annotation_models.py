@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 import xml.etree.ElementTree as ET
+from enum import Enum
 
 
 class CVATElement(ABC):
@@ -70,3 +71,11 @@ class CVATTrack(CVATElement):
             tracked_box.to_xml(track_xml)
 
         return track_xml
+
+
+class MyYoloLabel(Enum):
+    """Enumeration class representing the labels used in the dataset."""
+
+    PLAYER = 0
+    BALL = 1
+    REFEREE = 2
